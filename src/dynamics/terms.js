@@ -43,7 +43,7 @@ export function massMatrixKE(robot, theta) {
     // J_i = Ad_{T_0i⁻¹} J_s D_i : body Jacobian of link frame {i}
     const JsDi = Js.map((row) => row.map((v, j) => (j <= i ? v : 0)));
     const Ji = matMul(adjoint(transInv(kin.T0[i])), JsDi);
-    const term = matMul(transpose(Ji), matMul(robot.G[i], Ji));
+    const term = matMul(transpose(Ji), matMul((robot.Gref ?? robot.G)[i], Ji));
     Mq = Mq.map((row, r) => row.map((v, c) => v + term[r][c]));
   }
   return Mq;
@@ -109,12 +109,16 @@ export function forwardDynamics(robot, theta, dtheta, tau, opts = {}) {
 //   P = −Σ m_i g · p_i     (p_i = CoM position of link i in {0})
 // With zero joint torque, no friction and no external wrench, K + P is
 // constant: the first sanity check of any simulation.
+// Energy is always measured with the REFERENCE equations (robot.Gref and the
+// built-in twist recursion), so it stays a trustworthy yardstick even when the
+// plant is running an edited, wrong equation.
 export function energy(robot, theta, dtheta, kinIn) {
   const kin = kinIn ?? linkKinematics(robot, theta);
   const { V } = rne(robot, kin, dtheta, zerosVec(robot.N), { gravity: null });
+  const G = robot.Gref ?? robot.G;
   let K = 0, P = 0;
   for (let i = 0; i < robot.N; i++) {
-    K += 0.5 * dot(V[i], matVec(robot.G[i], V[i]));
+    K += 0.5 * dot(V[i], matVec(G[i], V[i]));
     const T = kin.T0[i];
     P -= robot.mass[i] * (robot.gravity[0] * T[0][3] + robot.gravity[1] * T[1][3] + robot.gravity[2] * T[2][3]);
   }

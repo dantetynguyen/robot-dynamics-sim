@@ -47,6 +47,7 @@ export function buildRobot(spec, inertiaEq = spatialInertia) {
 
   const A = [];
   const G = [];
+  const Gref = []; // always the reference formula, whatever the editor says
   const Irot = [];
   const mass = [];
   for (let i = 0; i < N; i++) {
@@ -55,6 +56,7 @@ export function buildRobot(spec, inertiaEq = spatialInertia) {
     Irot.push(I);
     mass.push(spec.links[i].mass);
     G.push(inertiaEq(I, spec.links[i].mass));
+    Gref.push(spatialInertia(I, spec.links[i].mass));
   }
 
   return {
@@ -66,6 +68,7 @@ export function buildRobot(spec, inertiaEq = spatialInertia) {
     Mee: Mlink[N],
     A,
     G,
+    Gref,
     Irot,
     mass,
     gravity: spec.gravity.slice(),

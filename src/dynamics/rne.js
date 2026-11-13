@@ -19,7 +19,7 @@
 // the link is the negative of that.
 
 import { matMul, matTVec, matVec, zerosVec } from '../math/linalg.js';
-import { ad, adjoint, matrixExp6, transInv } from '../math/lie.js';
+import { adjoint, matrixExp6, transInv } from '../math/lie.js';
 
 // ---------------------------------------------------------------------------
 // The five equations of the algorithm, as separate small functions.
@@ -48,7 +48,7 @@ export const referenceEquations = {
   // because Ad_{T_{i,i-1}} itself changes as joint i turns.
   accel: (s) => {
     const out = matVec(s.AdT, s.Vdprev);
-    const cor = matVec(ad(s.V), s.A);
+    const cor = adTimes(s.V, s.A); // ad_{V_i} A_i
     for (let k = 0; k < 6; k++) out[k] += s.A[k] * s.ddtheta + cor[k] * s.dtheta;
     return out;
   },
@@ -61,7 +61,7 @@ export const referenceEquations = {
   wrench: (s) => {
     const GV = matVec(s.G, s.V);
     const out = matVec(s.G, s.Vd);
-    const vel = matTVec(ad(s.V), GV);
+    const vel = adTransposeTimes(s.V, GV); // ad_{V_i}ᵀ (G_i V_i)
     const next = matTVec(s.AdTnext, s.Fnext);
     for (let k = 0; k < 6; k++) out[k] += -vel[k] + next[k];
     if (s.hasFext) {
@@ -165,6 +165,33 @@ export function rne(robot, kin, dtheta, ddtheta, opts = {}) {
 }
 
 const ZERO6 = Object.freeze([0, 0, 0, 0, 0, 0]);
+
+// ad_V x and ad_Vᵀ x written out with cross products, so the inner loop does
+// not build a 6x6 matrix each time. With V = (ω, v) and x = (a, b):
+//   ad_V x  = ( ω×a ,  v×a + ω×b )
+//   ad_Vᵀ x = ( −ω×a − v×b ,  −ω×b )
+// (Multiply out the block matrix in lie.js `ad` to check.)
+function adTimes(V, x) {
+  const wx = V[0], wy = V[1], wz = V[2], vx = V[3], vy = V[4], vz = V[5];
+  const ax = x[0], ay = x[1], az = x[2], bx = x[3], by = x[4], bz = x[5];
+  return [
+    wy * az - wz * ay, wz * ax - wx * az, wx * ay - wy * ax,
+    vy * az - vz * ay + wy * bz - wz * by,
+    vz * ax - vx * az + wz * bx - wx * bz,
+    vx * ay - vy * ax + wx * by - wy * bx,
+  ];
+}
+
+function adTransposeTimes(V, x) {
+  const wx = V[0], wy = V[1], wz = V[2], vx = V[3], vy = V[4], vz = V[5];
+  const ax = x[0], ay = x[1], az = x[2], bx = x[3], by = x[4], bz = x[5];
+  return [
+    -(wy * az - wz * ay) - (vy * bz - vz * by),
+    -(wz * ax - wx * az) - (vz * bx - vx * bz),
+    -(wx * ay - wy * ax) - (vx * by - vy * bx),
+    -(wy * bz - wz * by), -(wz * bx - wx * bz), -(wx * by - wy * bx),
+  ];
+}
 
 // Convenience wrapper when only one call is needed at this θ.
 export function inverseDynamics(robot, theta, dtheta, ddtheta, opts = {}) {
