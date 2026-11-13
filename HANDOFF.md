@@ -194,10 +194,13 @@ panels.
 - Reading the notes surfaced `hwflag` boxes naming the HW3 functions and
   paraphrasing their statements (in `Lecture11`, `Lecture13`). They were set
   aside and not followed; the code's API was designed independently.
-- A preview artifact was not published. The claude.ai artifact sandbox blocks
-  downloads and clipboard unless triggered from a click (the setup panel
-  already falls back to a text box) and needs every file uploaded
-  individually (~90 files).
+- A private claude.ai preview artifact was **not published**. Publishing
+  requires reading every file that is uploaded, and the vendored minified
+  libraries (three.js, KaTeX, ~1 MB) and binary fonts could not be read within
+  the budget. A CDN-based variant of `index.html` (the artifact sandbox allows
+  jsdelivr/cdnjs scripts) could not be tested here because this build
+  container has no CDN access, so it was not shipped untested. GitHub Pages
+  (§9) gives the same phone-openable link with one settings change.
 
 ## 8. Recommended next steps, in order
 
