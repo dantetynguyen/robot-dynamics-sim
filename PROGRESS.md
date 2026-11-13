@@ -59,3 +59,15 @@ context-compacted one) should read this file first, then HANDOFF.md.
 - NEXT: milestone 3 = UI (index.html, three.js scene, panels, plots), then
   teaching layer, docs, delivery. Still to read: Lecture04-07, Lecture12 for
   kinematics/trajectory citations (CONVENTIONS.md section 7).
+- (resumed after a usage-limit pause) Vendored pinned libs into vendor/:
+  three 0.180.0 (module + core + OrbitControls + fat-line addons), KaTeX
+  0.16.22 (js, css, woff2 fonts), IBM Plex Sans latin 400/500/600 woff2.
+  Addons import the bare specifier 'three' -> index.html needs an importmap.
+- UI design decisions: "lab instrument" look, dark slate default (#151c26
+  chart surface) with a light theme; IBM Plex Sans; chart/series colours from
+  the validated dataviz palette (dark: blue #3987e5, orange #d95926, aqua
+  #199e70, yellow #c98500, magenta #d55181, violet #9085e9, red #e66767).
+  Joints = aqua/yellow/magenta. Paths: desired = neutral dashed, predicted =
+  blue, belief = violet, actual = orange. Wrench = red.
+- Kinematics-file reading (Lecture04-07, 12) deferred until the app works;
+  until then kinematics cites MR equations (verified by grep) + notes topics.
