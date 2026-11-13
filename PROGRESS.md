@@ -37,3 +37,25 @@ context-compacted one) should read this file first, then HANDOFF.md.
 
 ### Log
 - Phase 0/1 complete, decisions locked. Starting Phase 2.
+- Milestone 1 done and pushed (pushes work: Dante linked the GitHub App).
+  Math core + numpy reference + 22 tests, all passing; JS vs Python agree to
+  ~1e-13 on FK, J_s, M, c, g for the default arm and a random 3R arm.
+- Milestone 2 done: whitelisted equation parser/compiler (src/equations/),
+  15 editable slots, EquationSet (plant / controller model / shared),
+  trajectories, controllers, Simulation class (RK4, prediction, snapshot,
+  save/load, fault handling), live checks, benchmark. 37 tests pass.
+- FINDING to report to Dante: his example "type the Topic 11 p. 5
+  diag([w],[v]) term and watch energy stop being conserved" is not what
+  happens. The dropped force m w x v is perpendicular to v, so it does no work;
+  energy stays conserved (3.8e-9 J after 2 s) while the motion is wrong and the
+  Christoffel check fails (1.97 N·m). Same for a missing transpose on ad.
+  Deleting the Coriolis term from the ACCELERATION recursion does break energy
+  (4.0 J after 2 s). Tests in tests/editor.test.js. Use this in experiment E9.
+- Benchmark (Node 22, this container): 8.7x real time plain; 3.3x with both
+  predictions at 5 Hz; 1.9x with one edited equation + predictions; 0.5x with
+  all 13 equations edited + predictions (1.2x without predictions).
+- hwflag boxes in Lecture11/13 mention HW3 function names and wording; set
+  aside, not followed. Mention in final report.
+- NEXT: milestone 3 = UI (index.html, three.js scene, panels, plots), then
+  teaching layer, docs, delivery. Still to read: Lecture04-07, Lecture12 for
+  kinematics/trajectory citations (CONVENTIONS.md section 7).
