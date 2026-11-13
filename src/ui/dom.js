@@ -8,7 +8,10 @@ export function el(tag, attrs = {}, ...children) {
     if (k.startsWith('on') && typeof v === 'function') node.addEventListener(k.slice(2), v);
     else if (k === 'class') node.className = v;
     else if (k === 'html') node.innerHTML = v;
-    else if (k === 'style' && typeof v === 'object') Object.assign(node.style, v);
+    else if (k === 'style' && typeof v === 'object') {
+      // custom properties (--name) must go through setProperty
+      for (const [prop, val] of Object.entries(v)) { if (prop.startsWith('--')) node.style.setProperty(prop, val); else node.style[prop] = val; }
+    }
     else node.setAttribute(k, v === true ? '' : v);
   }
   for (const c of children.flat(Infinity)) {

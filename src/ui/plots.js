@@ -59,7 +59,7 @@ export class StripChart {
     const css = getComputedStyle(this.el);
     const ink = (name) => css.getPropertyValue(name).trim();
     const times = this.times ?? [];
-    const padL = 44, padR = 8, padT = 6, padB = 18;
+    const padL = 54, padR = 8, padT = 6, padB = 18;
     const pw = w - padL - padR, ph = h - padT - padB;
     ctx.font = '11px "IBM Plex Sans", system-ui, sans-serif';
     if (times.length < 2) {
@@ -79,7 +79,7 @@ export class StripChart {
       for (let i = i0; i < col.length; i++) { const v = col[i]; if (Number.isFinite(v)) { if (v < lo) lo = v; if (v > hi) hi = v; } }
     }
     if (!Number.isFinite(lo)) { lo = -1; hi = 1; }
-    if (hi - lo < 1e-9) { const m = Math.max(Math.abs(hi), 1e-6) * 0.5; lo -= m; hi += m; }
+    if (hi - lo < 1e-6) { const mid = (hi + lo) / 2, m = Math.max(Math.abs(mid) * 0.05, 5e-4); lo = mid - m; hi = mid + m; } // do not zoom into rounding noise
     const pad = (hi - lo) * 0.08;
     lo -= pad; hi += pad;
     const X = (t) => padL + ((t - t0) / Math.max(t1 - t0, 1e-9)) * pw;
