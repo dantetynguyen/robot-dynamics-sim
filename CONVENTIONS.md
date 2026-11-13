@@ -47,8 +47,18 @@ the slip is logged here** (section 6).
 
 ## 3. Equations implemented, with sources
 
-### Kinematics
-(Topic 4–7 citations are filled in section 7 once those files were read.)
+### Kinematics (MR equation numbers verified against the text; notes cited at topic level, see section 7)
+- Skew matrix `[ω]` (MR Eq. 3.30); Rodrigues' formula (MR Eq. 3.51); `T⁻¹`
+  (MR Eq. 3.64); `e^{[S]θ}` (MR Eq. 3.88); adjoint `Ad_T` (MR Def. 3.20).
+- Space-form product of exponentials `T(θ) = e^{[S_1]θ_1}…e^{[S_N]θ_N} M`
+  (Topic 4; MR Eq. 4.14).
+- Space Jacobian, column `i = Ad_{e^{[S_1]θ_1}…e^{[S_{i-1}]θ_{i-1}}} S_i`
+  (Topic 5; MR Def. 5.1, Eq. 5.11).
+- Body Jacobian (Topic 6; MR Eq. 5.18) and `J_b = Ad_{T⁻¹} J_s` (MR Eq. 5.22).
+- Manipulability measures μ₁ = √(λmax/λmin), μ₂ = λmax/λmin, μ₃ = √det(JJᵀ)
+  (Topic 7; MR §5.4). Singularities (Topic 7; MR §5.3).
+- Straight-line joint path `θ(s) = θ_start + s(θ_end − θ_start)` (MR Eq. 9.3)
+  with cubic and quintic time scaling (Topic 12; MR §9.2.2.1, Eqs. 9.9–9.11).
 
 ### Wrenches and statics (Topic 10; MR §3.4, §5.2, §5.4)
 - Wrench as a screw: finite pitch `F = f·(-ŝ×q + hŝ, ŝ)`; infinite pitch (pure
@@ -160,5 +170,19 @@ Poinsot's theorem; reciprocal screws at the manipulator level.
 Each row was re-checked numerically in this repo's test-suite rather than
 taken on trust; see HANDOFF.md for the numbers of the last run.
 
-## 7. Kinematics sources
-(Filled in during the build; see below.)
+## 7. What was and was not read (session 1)
+
+Read in full with `project_read`: the notes' `README.md`, `Lecture10`
+(Topic 10), `Lecture11` (Topic 11), `Lecture13` (Topic 13). Page-level
+citations to those topics come from that reading.
+
+**Not read:** `Lecture04`–`Lecture07`, `Lecture12`, `Lecture14`. Citations to
+Topics 4–7, 12 and 14 are therefore topic-level only and rest on the notes
+README's topic map; the equations themselves were taken from MR (numbers
+verified against the MR text) and checked numerically. Next agent: read those
+files, upgrade the citations to page level, and confirm the notes' own
+definitions (especially μ₁, μ₂, μ₃ in Topic 7 and the time scalings in
+Topic 12) match what the code does. Log any difference in section 6.
+
+MR was available as extracted text; equation and section numbers cited here
+were each found in that text. MR page numbers are not cited.

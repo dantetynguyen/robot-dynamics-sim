@@ -9,6 +9,7 @@
     "reference": "node tools/export_robot.mjs && python3 reference/generate_fixtures.py",
     "bench": "node tools/benchmark.mjs",
     "acceptance": "node --test \"tests/*.test.js\" ; node tools/acceptance_report.mjs",
+    "smoke": "python3 tools/smoke_test.py",
     "serve": "python3 -m http.server 8080"
   },
   "license": "MIT"

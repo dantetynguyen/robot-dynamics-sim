@@ -71,3 +71,11 @@ context-compacted one) should read this file first, then HANDOFF.md.
   blue, belief = violet, actual = orange. Wrench = red.
 - Kinematics-file reading (Lecture04-07, 12) deferred until the app works;
   until then kinematics cites MR equations (verified by grep) + notes topics.
+- Milestone 3+4 done and pushed: full UI (two modes, 3D view, charts, six
+  tabs), 12 experiments, teaching text. Smoke test (tools/smoke_test.py)
+  passes: every tab and experiment runs with no page errors.
+- Usage budget ran low: owner re-prioritised to (1) working UI, (2) teaching
+  layer, (3) HANDOFF.md. Docs written: HANDOFF, ARCHITECTURE, DECISIONS,
+  README, ACCEPTANCE, CONVENTIONS section 7 (what was not read).
+- NOT done: Lecture04-07/12 reading (kinematics citations are topic-level),
+  real-GPU performance measurement, screenshot. See HANDOFF.md sections 6, 8.
