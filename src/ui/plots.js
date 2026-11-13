@@ -99,10 +99,10 @@ export class StripChart {
     }
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
-    const xs = niceStep(t1 - t0, 5);
-    for (let t = Math.ceil(t0 / xs) * xs; t <= t1; t += xs) {
+    const xs = niceStep(t1 - t0, Math.max(2, Math.floor(pw / 70)));
+    for (let t = Math.ceil(t0 / xs) * xs; t <= t1 + 1e-9; t += xs) {
       ctx.fillStyle = ink('--muted');
-      ctx.fillText(`${fmt(t, xs >= 1 ? 0 : 1)} s`, X(t), h - 4);
+      ctx.fillText(`${fmt(t, xs >= 1 ? 0 : xs >= 0.1 ? 1 : 2)} s`, X(t), h - 4);
     }
 
     // series

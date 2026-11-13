@@ -99,7 +99,7 @@ export class App {
     this.runBtn = button(v.running ? 'Pause' : 'Run', () => this.setRunning(!this.view.running), 'primary');
     clear(this.topbar).append(
       el('span', { class: 'brand' }, 'Robot Dynamics Simulator'),
-      seg([['kinematics', 'Kinematics'], ['dynamics', 'Dynamics']], v.mode, (m) => { this.setMode(m); this.buildTopbar(); }),
+      seg([['kinematics', 'Kinematics'], ['dynamics', 'Dynamics']], v.mode, (m) => this.setMode(m)),
       ...(v.mode === 'dynamics' ? [
         this.runBtn,
         button('Step', () => { this.setRunning(false); this.sim.step(Math.round(0.01 / this.sim.config.dt)); this.predDirty = true; }),
@@ -132,6 +132,7 @@ export class App {
       type: 'button', role: 'tab', 'aria-selected': String(id === this.view.tab),
       onclick: () => { this.view.tab = id; this.setMode(mode, id); },
     }, label)));
+    this.buildTopbar(); // the top bar shows different controls in each mode
     this.renderTab();
     this.renderLegend();
     this.predDirty = true;
