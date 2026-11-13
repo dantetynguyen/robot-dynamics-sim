@@ -1,0 +1,15 @@
+{
+  "name": "robot-dynamics-sim",
+  "version": "0.1.0",
+  "description": "Interactive 3-DOF spatial arm simulator: screw-theory kinematics, recursive Newton-Euler dynamics, wrenches, and control.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test \"tests/*.test.js\"",
+    "reference": "node tools/export_robot.mjs && python3 reference/generate_fixtures.py",
+    "bench": "node tools/benchmark.mjs",
+    "acceptance": "node --test \"tests/*.test.js\" ; node tools/acceptance_report.mjs",
+    "serve": "python3 -m http.server 8080"
+  },
+  "license": "MIT"
+}
